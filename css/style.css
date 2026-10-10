@@ -1,0 +1,510 @@
+/* ============================================================
+   Life Dashboard — style.css
+   ============================================================ */
+
+/* ── CSS Custom Properties ───────────────────────────────── */
+:root {
+  /* Brand colours */
+  --clr-grad-start:  #6d28d9;   /* purple-700  */
+  --clr-grad-end:    #4338ca;   /* indigo-700  */
+
+  /* Light-mode surface tokens */
+  --clr-bg:          #f5f3ff;   /* very pale lavender */
+  --clr-card:        #ffffff;
+  --clr-card-border: #e0d9ff;
+  --clr-text:        #1e1b4b;
+  --clr-text-muted:  #6b7280;
+  --clr-input-bg:    #f9f8ff;
+  --clr-input-border:#c4b5fd;
+  --clr-shadow:      rgba(109, 40, 217, 0.10);
+
+  /* Accent */
+  --clr-primary:     #7c3aed;
+  --clr-primary-h:   #6d28d9;
+  --clr-secondary:   #e0d9ff;
+  --clr-secondary-h: #c4b5fd;
+  --clr-danger:      #ef4444;
+  --clr-danger-h:    #dc2626;
+  --clr-success:     #22c55e;
+
+  /* Timer ring */
+  --clr-timer:       #7c3aed;
+
+  /* Spacing & shape */
+  --radius:     14px;
+  --radius-sm:   8px;
+  --gap:        1.25rem;
+  --transition: 0.22s ease;
+}
+
+/* Dark mode overrides */
+[data-theme="dark"] {
+  --clr-bg:          #0f0a1e;
+  --clr-card:        #1a1235;
+  --clr-card-border: #2e2060;
+  --clr-text:        #ede9fe;
+  --clr-text-muted:  #a78bfa;
+  --clr-input-bg:    #120d28;
+  --clr-input-border:#4c3a8a;
+  --clr-shadow:      rgba(0, 0, 0, 0.45);
+  --clr-secondary:   #2e2060;
+  --clr-secondary-h: #3d2d80;
+}
+
+/* ── Reset ───────────────────────────────────────────────── */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  background: var(--clr-bg);
+  color: var(--clr-text);
+  min-height: 100vh;
+  transition: background var(--transition), color var(--transition);
+}
+
+/* ── Top bar ─────────────────────────────────────────────── */
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.85rem 2rem;
+  background: linear-gradient(135deg, var(--clr-grad-start), var(--clr-grad-end));
+  color: #fff;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.25);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.topbar__brand {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* ── Dashboard grid ──────────────────────────────────────── */
+.dashboard {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: var(--gap);
+  padding: var(--gap) 2rem 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ── Cards ───────────────────────────────────────────────── */
+.card {
+  background: var(--clr-card);
+  border: 1px solid var(--clr-card-border);
+  border-radius: var(--radius);
+  padding: 1.5rem;
+  box-shadow: 0 4px 20px var(--clr-shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  transition: background var(--transition), border-color var(--transition),
+              box-shadow var(--transition);
+}
+
+/* Greeting card spans full width on larger screens */
+.card--wide {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+.card__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--clr-primary);
+  letter-spacing: 0.01em;
+}
+
+/* ── Clock & Greeting ────────────────────────────────────── */
+.clock-display {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.clock__time {
+  font-size: clamp(2.4rem, 6vw, 3.5rem);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  background: linear-gradient(135deg, var(--clr-grad-start), var(--clr-grad-end));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  line-height: 1.1;
+}
+
+.clock__date {
+  font-size: 0.95rem;
+  color: var(--clr-text-muted);
+}
+
+.greeting-box {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 240px;
+}
+
+.greeting__text {
+  font-size: 1.3rem;
+  font-weight: 600;
+}
+
+.greeting__name-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+/* ── Focus Timer ─────────────────────────────────────────── */
+.timer__display {
+  font-size: clamp(2.8rem, 8vw, 4rem);
+  font-weight: 800;
+  text-align: center;
+  letter-spacing: 0.06em;
+  color: var(--clr-timer);
+  font-variant-numeric: tabular-nums;
+}
+
+.timer__controls {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+/* ── To-Do List ──────────────────────────────────────────── */
+.todo__input-row {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.todo__list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  max-height: 320px;
+  overflow-y: auto;
+  padding-right: 2px;
+}
+
+/* Scrollbar styling */
+.todo__list::-webkit-scrollbar { width: 5px; }
+.todo__list::-webkit-scrollbar-track { background: transparent; }
+.todo__list::-webkit-scrollbar-thumb {
+  background: var(--clr-input-border);
+  border-radius: 99px;
+}
+
+.todo__item {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 0.55rem 0.75rem;
+  border-radius: var(--radius-sm);
+  background: var(--clr-input-bg);
+  border: 1px solid var(--clr-card-border);
+  transition: background var(--transition), opacity var(--transition);
+  animation: slideIn 0.2s ease;
+}
+
+@keyframes slideIn {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.todo__item input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: var(--clr-primary);
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.todo__item-text {
+  flex: 1;
+  font-size: 0.92rem;
+  word-break: break-word;
+}
+
+.todo__item--done .todo__item-text {
+  text-decoration: line-through;
+  color: var(--clr-text-muted);
+  opacity: 0.7;
+}
+
+.todo__item-actions {
+  display: flex;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
+
+.todo__empty,
+.links__empty {
+  font-size: 0.88rem;
+  color: var(--clr-text-muted);
+  text-align: center;
+  padding: 0.5rem 0;
+}
+
+/* ── Quick Links ─────────────────────────────────────────── */
+.links__input-group {
+  display: flex;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.links__input-group .input { flex: 1; min-width: 120px; }
+
+.links__list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.link__pill {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.35rem 0.75rem;
+  border-radius: 99px;
+  background: var(--clr-secondary);
+  border: 1px solid var(--clr-input-border);
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: background var(--transition), border-color var(--transition);
+  animation: slideIn 0.2s ease;
+}
+
+.link__pill a {
+  color: var(--clr-primary);
+  text-decoration: none;
+}
+
+.link__pill a:hover { text-decoration: underline; }
+
+.link__pill button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.75rem;
+  color: var(--clr-text-muted);
+  line-height: 1;
+  padding: 0;
+  transition: color var(--transition);
+}
+
+.link__pill button:hover { color: var(--clr-danger); }
+
+/* ── Shared Input ────────────────────────────────────────── */
+.input {
+  flex: 1;
+  padding: 0.5rem 0.75rem;
+  border: 1px solid var(--clr-input-border);
+  border-radius: var(--radius-sm);
+  background: var(--clr-input-bg);
+  color: var(--clr-text);
+  font-size: 0.9rem;
+  outline: none;
+  transition: border-color var(--transition), background var(--transition),
+              box-shadow var(--transition);
+}
+
+.input:focus {
+  border-color: var(--clr-primary);
+  box-shadow: 0 0 0 3px rgba(124, 58, 237, 0.18);
+}
+
+.input::placeholder { color: var(--clr-text-muted); }
+
+/* ── Buttons ─────────────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 0.5rem 1rem;
+  transition: background var(--transition), color var(--transition),
+              transform 0.1s ease, box-shadow var(--transition);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.btn:active { transform: scale(0.96); }
+
+.btn--primary {
+  background: var(--clr-primary);
+  color: #fff;
+}
+.btn--primary:hover { background: var(--clr-primary-h); }
+
+.btn--secondary {
+  background: var(--clr-secondary);
+  color: var(--clr-primary);
+}
+.btn--secondary:hover { background: var(--clr-secondary-h); }
+
+.btn--ghost {
+  background: transparent;
+  color: var(--clr-text-muted);
+  border: 1px solid var(--clr-card-border);
+}
+.btn--ghost:hover {
+  background: var(--clr-secondary);
+  color: var(--clr-text);
+}
+
+.btn--danger {
+  background: transparent;
+  color: var(--clr-danger);
+  border: none;
+  padding: 0.25rem 0.4rem;
+  font-size: 0.82rem;
+}
+.btn--danger:hover { color: var(--clr-danger-h); }
+
+.btn--icon {
+  background: rgba(255,255,255,0.18);
+  color: #fff;
+  border-radius: 50%;
+  width: 2.2rem;
+  height: 2.2rem;
+  padding: 0;
+  font-size: 1rem;
+}
+.btn--icon:hover { background: rgba(255,255,255,0.30); }
+
+/* ── Edit Modal ──────────────────────────────────────────── */
+
+/* Ensure the HTML `hidden` attribute always wins, even against
+   display:flex rules defined below. */
+.modal[hidden],
+.modal__overlay[hidden] {
+  display: none !important;
+}
+
+.modal__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  z-index: 200;
+  animation: fadeIn 0.18s ease;
+}
+
+.modal {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 201;
+  padding: 1rem;
+}
+
+.modal__box {
+  background: var(--clr-card);
+  border: 1px solid var(--clr-card-border);
+  border-radius: var(--radius);
+  padding: 1.75rem;
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.3);
+  animation: popIn 0.2s ease;
+}
+
+.modal__title {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--clr-primary);
+}
+
+.modal__actions {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+@keyframes popIn {
+  from { opacity: 0; transform: scale(0.92); }
+  to   { opacity: 1; transform: scale(1); }
+}
+
+/* ── Toast notification ──────────────────────────────────── */
+.toast {
+  position: fixed;
+  bottom: 1.5rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(0);
+  background: var(--clr-primary);
+  color: #fff;
+  padding: 0.65rem 1.4rem;
+  border-radius: 99px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+  z-index: 300;
+  white-space: nowrap;
+  pointer-events: none;
+  animation: toastIn 0.25s ease forwards;
+}
+
+.toast.toast--hide {
+  animation: toastOut 0.3s ease forwards;
+}
+
+@keyframes toastIn {
+  from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes toastOut {
+  from { opacity: 1; transform: translateX(-50%) translateY(0); }
+  to   { opacity: 0; transform: translateX(-50%) translateY(12px); }
+}
+
+/* ── Responsive ──────────────────────────────────────────── */
+@media (max-width: 640px) {
+  .topbar { padding: 0.75rem 1rem; }
+
+  .dashboard { padding: var(--gap) 1rem 2.5rem; }
+
+  .card--wide {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .greeting__name-row { flex-wrap: wrap; }
+
+  .timer__display { font-size: 3.2rem; }
+
+  .links__input-group { flex-direction: column; }
+  .links__input-group .input { min-width: unset; width: 100%; }
+
+  .todo__input-row { flex-wrap: wrap; }
+}
+
+@media (max-width: 400px) {
+  .clock__time { font-size: 2.4rem; }
+}
